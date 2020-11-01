@@ -30,6 +30,6 @@ RUN tar -xzvf ${MODEL_NAME}.tar.gz
 
 RUN echo '#!/bin/bash \n\n\
 tensorflow_model_server --rest_api_port=${PORT} \
---model_config_file=/${MODEL_BASE_PATH}/models.conf
+--model_config_file=/${MODEL_BASE_PATH}/models.conf \
 "$@"' > /usr/bin/tf_serving_entrypoint.sh \
 && chmod +x /usr/bin/tf_serving_entrypoint.sh
