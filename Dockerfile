@@ -11,7 +11,7 @@ LABEL maintainer="gvasudevan@google.com"
 LABEL tensorflow_serving_github_branchtag=${TF_SERVING_VERSION_GIT_BRANCH}
 LABEL tensorflow_serving_github_commit=${TF_SERVING_VERSION_GIT_COMMIT}
 
-ENV MODEL_NAME=dockertest
+ENV MODEL_NAME=saved_model_half_plus_two_cpu
 ENV MODEL_BASE_PATH=/models
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -29,4 +29,9 @@ RUN mkdir -p ${MODEL_BASE_PATH}
 
 RUN wget http://bucketeer-14c8ab4d-3c8f-427a-a64a-a454a807ab62.s3.amazonaws.com/public/${MODEL_NAME}.tar.gz
 RUN tar -xzvf ${MODEL_NAME}.tar.gz -C /models
-RUN ls
+
+RUN echo '#!/bin/bash \n\n\
+tensorflow_model_server --rest_api_port=${PORT} \
+--model_name=${MODEL_NAME} --model_base_path=${MODEL_BASE_PATH}/${MODEL_NAME} \
+"$@"' > /usr/bin/tf_serving_entrypoint.sh \
+&& chmod +x /usr/bin/tf_serving_entrypoint.sh
