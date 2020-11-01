@@ -29,4 +29,4 @@ RUN mkdir -p ${MODEL_BASE_PATH}
 
 RUN wget http://bucketeer-14c8ab4d-3c8f-427a-a64a-a454a807ab62.s3.amazonaws.com/public/${MODEL_NAME}.tar.gz
 RUN tar -xzvf ${MODEL_NAME}.tar.gz -C /models
-RUN echo '#!/bin/bash \nls'
+RUN ls
